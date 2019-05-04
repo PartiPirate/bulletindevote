@@ -1,0 +1,103 @@
+#donations-gauge-wrapper {
+    position: relative;
+    margin-bottom: 2em;
+}
+
+#donations-gauge-wrapper #gauge {
+    margin-bottom: 4px;
+    background-color: #8814cc1a !important;
+    position: relative;
+}
+
+#donations-gauge-wrapper #gauge .progress-bar {
+    top: 0;
+    position: absolute;
+    background-color: #8814cc55 !important;
+}
+#donations-gauge-wrapper #gauge .progress-bar.active {
+    background-color: #8814cc !important;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+    text-align: right;
+    box-sizing: border-box;
+    padding-right: 4px;
+}
+
+#donations-gauge-wrapper .gauge-steps {
+    height: 140px;
+}
+
+#donations-gauge-wrapper .gauge-step {
+    position: absolute;
+    width: 150px;
+    margin-left: -150px;
+    text-align: right;
+}
+
+#donations-gauge-wrapper .gauge-step.locked {
+    opacity: 0.6;
+}
+
+
+#donations-gauge-wrapper .gauge-step .label {
+    background-color: #ccc;
+    font-size: 0.8em;
+    padding: 0.2em;
+    font-variant: small-caps;
+    display: inline-block;
+}
+
+#donations-gauge-wrapper .gauge-step::before {
+    display: block;
+    content: "";
+    border-right: 2px solid #777;
+    border-bottom: 2px solid #777;
+    height: 12px;
+    margin-bottom: 4px;
+}
+
+#donations-gauge-wrapper .gauge-step .value {
+    font-size: 1.1em;
+}
+
+
+#donations-gauge-wrapper .gauge-step .description {
+    font-size: 0.9em;
+}
+
+
+/* states */
+#donations-gauge-wrapper .gauge-step.achieved .label {
+    background-color: #532e68;
+}
+
+#donations-gauge-wrapper .gauge-step.current .label {
+    background-color: #8814cc;
+
+}
+
+#donations-gauge-wrapper .gauge-step.current .value {
+    color: #8814cc;
+}
+
+#donations-gauge-wrapper .gauge-step.achieved .value {
+    color: #532e68;
+}
+
+@media screen and (max-width: 920px){
+    #donations-gauge-wrapper .gauge-steps {
+        height: auto;
+        margin: 1em;
+    }
+
+    #donations-gauge-wrapper .gauge-step {
+        display: block;
+        position: relative;
+        width: auto;
+        left: initial !important;
+        margin-bottom: 1em;
+    }
+
+    #donations-gauge-wrapper .gauge-step::before {
+        display: none;
+    }
+}

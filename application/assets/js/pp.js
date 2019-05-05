@@ -23,7 +23,7 @@ $(function() {
 
 	    var formData = new FormData(form[0]);
 	    $.ajax({
-	        url: 'do_volunteer.php',  //Server script to process data
+	        url: 'do_finance.php',  //Server script to process data
 	        type: 'POST',
 	        xhr: function() {  // Custom XMLHttpRequest
 	            var myXhr = $.ajaxSettings.xhr();
@@ -77,19 +77,9 @@ $(function() {
 		submit($("#contactForm"));
 	});
 
-	$("#icandidateButton").click(function(event) {
+	$("#finance-button").click(function(event) {
 		event.preventDefault();
 		submit($("#contactForm"));
-	});
-
-	$(".ijoinButton").click(function(event) {
-		event.preventDefault();
-		window.location.replace(joinUrl);
-	});
-
-	$(".idonateButton").click(function(event) {
-		event.preventDefault();
-		window.location.replace(donateUrl);
 	});
 
 	$("input[type=checkbox]").click(function(event) {

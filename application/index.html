@@ -294,7 +294,7 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
             <button value="villes" type="button" class="btn btn-default">Villes</button>	
         </div>	
         <p class="help-block">	
-        Attention à prendre aussi les délais de livraison
+        Attention à prendre en compte aussi les délais de livraison
         </p>	
     </div>	
 </div>
@@ -313,9 +313,9 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
     		<option value="30">30%</option>
     		<option value="35">35%</option>
     		<option value="40">40%</option>
-<!--    		
     		<option value="45">45%</option>
     		<option value="50">50%</option>
+<!--    		
     		<option value="55">55%</option>
     		<option value="60">60%</option>
     		<option value="65">65%</option>
@@ -345,7 +345,7 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 
 <div class="clearfix"></div>
 
-<div class="form-group has-feedback zone-dependant zone-departement">	
+<div class="form-group has-feedback zone-dependant zone-departement zone-villes">	
     <label class="col-md-5 control-label">Département</label>	
     <div class="col-md-7">	
         <select class="form-control" placeholder="Le département à financer" id="departement-select" name="department">
@@ -389,9 +389,29 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 
 <div class="clearfix"></div>
 
+</div>	
+</fieldset>	
+</div>	
+</div>                    	
+
+<div class="row">	
+<div class="col-lg-12" data-scrollreveal="enter left over 1s">	
+
+<br>
+
 <div id="destinations">
+	<div class="row">
+		<div class="col-xs-2 text-left">Zone</div>
+		<div class="col-xs-2 text-right">Nombre de villes</div>
+		<div class="col-xs-2 text-right">Proportion de bulletin</div>
+		<div class="col-xs-3 text-right">Nombre de bulletin</div>
+		<div class="col-xs-2 text-right">Prix (indication)</div>
+		<div class="col-xs-1 text-right"></div>
+	</div>
 </div>
 
+<div class="clearfix"></div>
+<br><br>
 <div class="clearfix"></div>
 
 <div class="form-group">
@@ -405,12 +425,9 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
     </div>
 </div>
 
+<br><br>
 
 
-
-
-</div>	
-</fieldset>	
 </div>	
 </div>                    	
 
@@ -801,17 +818,30 @@ function computeTotals() {
 
 function addSearch() {
 	if (!actualSearch) return;
-	
-	var row = $("<div class='row'></div>");
+
+	var row = $("<div class='row destination'></div>");
 
 	row.data("type", actualSearch.type);
+	row.data("proportion", actualSearch.proportion);
+	row.data("insee", actualSearch["insee"]);
 
-	row.append($("<div class='col-xs-3 zone text-left'></div>").text(actualSearch.region ? actualSearch.region : (actualSearch.department ? actualSearch.department : actualSearch.city)));
-	row.append($("<div class='col-xs-3 nb-cities text-right'></div>").text(actualSearch.numberOfCities));
+	row.append($("<div class='col-xs-3 zone text-left'></div>").text(actualSearch.region ? actualSearch.region : (actualSearch.city ? actualSearch.city : actualSearch.department)));
+	row.append($("<div class='col-xs-1 nb-cities text-right'></div>").text(actualSearch.numberOfCities));
+	row.append($("<div class='col-xs-1 proportion text-right'></div>").text(actualSearch.proportion + "%"));
 	row.append($("<div class='col-xs-3 nb-ballots text-right'></div>").text(numberFormat.format(actualSearch.numberOfBallots)).data("nb-ballots", actualSearch.numberOfBallots));
 	row.append($("<div class='col-xs-3 price text-right'></div>").text(priceFormat.format(actualSearch.price)));
 
+	var actionDiv = $("<div class='col-xs-1 action text-right'></div>");
+
+	row.append(actionDiv);
+
+	actionDiv.append($("<button class='btn btn-xs btn-danger btn-remove-destination'><i class='fas fa-times'></i></button>"));
+
 	$("#destinations").append(row);
+
+	row.find(".btn-remove-destination").click(function() {
+		$(this).parents(".destination").remove();
+	});
 
 	computeTotals();
 }
@@ -845,6 +875,10 @@ function getNumberOfBallots(parameters) {
 		actualSearch["numberOfCities"] = data.numberOfCities;
 		actualSearch["numberOfBallots"] = numberOfBallots;
 		actualSearch["price"] = price;
+
+		if (data.numberOfCities == 1) {
+			actualSearch["insee"] = data.cities[0].cit_insee;
+		}
 
 		if (!$("#selection").html()) {
 			var text = "Nombre de villes : " + data.numberOfCities;
@@ -910,6 +944,7 @@ $(function() {
 
 	$("#departement-select").change(function() {
 		var department = getDepartment($(this).val());
+		$("#city-autocomplete").val("");
 
 		if (department) {
 			$("#selection").html("Departement : " + department.dep_name + "<br>Nombre de villes : " + department.dep_number_of_cities + "<br>Population : " + numberFormat.format(department.dep_population * 1000) + " habitants<br>Electeurs : ~" + numberFormat.format(numberOfElectors(department.dep_population * 1000)));
@@ -922,14 +957,21 @@ $(function() {
 		}
 	});
 
-	$("#city-autocomplete").change(function() {
+	$("#city-autocomplete").keyup(function() {
+		var department = getDepartment($("#departement-select").val());
 		var city = $(this).val();
 
 		if (city) {
 //			$("#selection").html("Departement : " + department.dep_name + "<br>Nombre de villes : " + department.dep_number_of_cities + "<br>Population : " + numberFormat.format(department.dep_population * 1000) + " habitants<br>Electeurs : ~" + numberFormat.format(numberOfElectors(department.dep_population * 1000)));
 
 			$("#selection").html("");
-			getNumberOfBallots({"city" : city, "proportion": proportion, type: "villes"});
+			
+			var parameters = {"city" : city, "proportion": proportion, type: "villes"};
+			if (department) {
+				parameters["department"] = department.dep_name;
+			}
+			
+			getNumberOfBallots(parameters);
 		}
 		else {
 			$("#selection").html("");
@@ -939,6 +981,19 @@ $(function() {
 
 	$("#proportion").change(function() {
 		proportion = $(this).val();
+
+		switch($("#zoneInput").val()) {
+			case "villes": 
+				$("#city-autocomplete").keyup();
+				break;
+			case "departement": 
+				$("#departement-select").change();
+				break;
+			case "region": 
+				$("#region-select").change();
+				break;
+		}
+
 	});
 });
 

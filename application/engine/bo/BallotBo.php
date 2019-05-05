@@ -79,6 +79,11 @@ class BallotBo {
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
 		}
 
+		if (isset($filters["bal_confirmed"])) {
+			$args["bal_confirmed"] = $filters["bal_confirmed"];
+			$queryBuilder->where("bal_confirmed = :bal_confirmed");
+		}
+
 		$query = $queryBuilder->constructRequest();
 		$statement = $this->pdo->prepare($query);
 

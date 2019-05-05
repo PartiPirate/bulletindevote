@@ -26,7 +26,7 @@ require_once("engine/bo/BallotBo.php");
 $connection = openConnection();
 
 $ballotBo = BallotBo::newInstance($connection, $config);
-$ballots = $ballotBo->getByFilters(array());
+$ballots = $ballotBo->getByFilters(array("bal_confirmed" => 1));
 
 $data = array();
 $data["type"] = "FeatureCollection";

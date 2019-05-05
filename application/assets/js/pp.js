@@ -1,10 +1,38 @@
 var donateUrl = "https://don.partipirate.org";
 var joinUrl = "https://adhesion.partipirate.org";
 
+function createDestinationsInput() {
+	var destinations = [];
+
+	$("#destinations .destination").each(function() {
+		var row = $(this);
+		var destination = {};
+
+		destination.type = row.data("type");
+		destination.proportion = row.data("proportion");
+
+		destination.zone = row.find(".zone").text();
+		destination.insee =	row.data("insee");
+
+//		destination.zone = row.find(".zone").text();
+
+		destinations.push(destination);
+	});
+
+	$("#destinations-input").val(JSON.stringify(destinations));
+}
+
 $(function() {
 
 	function check(form) {
 		var status = true;
+
+		if (!$("#xxx").val()) {
+			status = false;
+		}
+		else if ($("#xxx").val() != $("#xxx").val()) {
+			status = false;
+		}
 
 		return status;
 	}
@@ -17,6 +45,8 @@ $(function() {
 	}
 
 	function submit(form) {
+		createDestinationsInput();
+		
 		if (!check(form)) return;
 
 		$("#volunteerVeil").show();

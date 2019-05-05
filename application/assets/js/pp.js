@@ -2,79 +2,10 @@ var donateUrl = "https://don.partipirate.org";
 var joinUrl = "https://adhesion.partipirate.org";
 
 $(function() {
-//	function changeStatus(id, status, message) {
-//		var glyphStatus = $("#" + id + "Status");
-//
-//		glyphStatus.removeClass("otbHidden");
-//
-//		if (status == "success") {
-//			glyphStatus.removeClass("glyphicon-remove");
-//			glyphStatus.addClass("glyphicon-ok");
-//		}
-//		else {
-//			glyphStatus.removeClass("glyphicon-ok");
-//			glyphStatus.addClass("glyphicon-remove");
-//		}
-//
-//		glyphStatus.parents(".has-feedback").removeClass("has-success").removeClass("has-error").addClass("has-" + status);
-//	}
-//
-//	function check_firstname() {
-//		if ($("#firstname").val() == "") {
-//			changeStatus("firstname", "error", "");
-//			return false;
-//		}
-//		changeStatus("firstname", "success", "");
-//		return true;
-//	}
-//
-//	function check_lastname() {
-//		if ($("#lastname").val() == "") {
-//			changeStatus("lastname", "error", "");
-//			return false;
-//		}
-//		changeStatus("lastname", "success", "");
-//		return true;
-//	}
-
-//	function check_xxx() {
-//	    var mailRegExp = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$");
-//
-//		if ($("#xxx").val() == "") {
-//			changeStatus("xxx", "error", "");
-//			return false;
-//		}
-//
-//		if (mailRegExp.test($("#xxx").val().toUpperCase()) === false) {
-//			changeStatus("xxx", "error", "");
-//			return false;
-//		}
-//
-//		changeStatus("xxx", "success", "");
-//		return true;
-//	}
-
-//	function check_confirmationMail() {
-//		if ($("#xxx").val() != $("#confirmationMail").val()) {
-//			changeStatus("confirmationMail", "error", "");
-//			return false;
-//		}
-//		changeStatus("confirmationMail", "success", "");
-//		return true;
-//	}
 
 	function check(form) {
 		var status = true;
-//
-//		form.find("input").each(function() {
-//
-//			if (form.find("#" + $(this).attr("id") + "Status").length) {
-//				if (!eval("check_" + $(this).attr("id") + "();")) {
-//					status = false;
-//				}
-//			}
-//		});
-//
+
 		return status;
 	}
 
@@ -121,47 +52,21 @@ $(function() {
 	    });
 	}
 
-	$("#candidateButtons button").click(function() {
-		switch($(this).val()) {
-			case "eligible":
-			case "filler":
-				$("#candidateButtons button").removeClass("active");
-				break;
-		}
-
-		if ($(this).hasClass("active")) {
-			$(this).removeClass("active");
-		} else {
-			$(this).addClass("active");
-		}
-
-		var candidateValue = "";
-		var candidateSeparator = "";
-
-		$(".photo-element").hide();
-
-		$("#candidateButtons button.active").each(function() {
-			candidateValue += candidateSeparator;
-
-			if ($(this).val() == "candidate" || $(this).val() == "eligible") {
-				$(".photo-element").show();
-			}
-
-			candidateValue += $(this).val();
-			candidateSeparator = ",";
-		});
-
-		$("#candidateInput").val(candidateValue);
-	});
-
-	$("#sexButtons button").click(function() {
+	$("#zoneButtons button").click(function() {
 		if (!$(this).hasClass("active")) {
-			$("#sexButtons button").removeClass("active");
+			$("#zoneButtons button").removeClass("active");
 			$(this).addClass("active");
 
-			$("#sexInput").val($(this).val());
+			const zone = $(this).val();
+			
+			$(".zone-dependant").hide();
+			$(".zone-" + zone).show();
+
+			$("#zoneInput").val($(this).val());
 		}
 	});
+	
+	$(".zone-dependant").hide();
 
 	$('#confirmationMail').bind('paste', function(event) {
 		event.preventDefault();

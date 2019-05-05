@@ -128,19 +128,19 @@
             <div class="aside-overlay">
                 <div class="container">
                     <div class="row text-center">
-                        <div class="col-lg-8 col-lg-offset-2 page-scroll"  data-scrollreveal="enter bottom after .6s">
+                        <div class="col-lg-10 col-lg-offset-1 page-scroll"  data-scrollreveal="enter bottom after .6s">
 							<br /><br />
-							<p class="text-justify">Le suffrage universel doit permettre à tous les électeurs de s'exprimer et alors que <strong>33 listes</strong> se sont présentées à ces élections européennes en France, nous savons tous que nous ne trouverons pas 33 bulletins de vote dans nos bureaux de vote.</p>
-							<p class="text-justify">Pourquoi ? Parce que les bulletins de vote doivent être fournis par les candidats <strong>pour tous les électeurs</strong>.<br />
-							D'après notre imprimeur préféré, cela couterait au minimum <strong>270 000€</strong>.</p>
-							<p class="text-justify">Oui, nous aussi, on trouve ça inadmissible.</p>
-							<p class="text-justify">Tout comme la plupart des "petits" partis qui ne sont financés que par les dons de leurs soutiens, nous, Pirates, ne sommes pas en capacité d'imprimer nos bulletins de vote nous mêmes.</p>
-							<p class="text-justify">Aussi, nous sommes contraints et désolés de vous demander d'<strong>imprimer vous-mêmes votre bulletin</strong>. </p>
-							<p class="text-justify">Mais nous nous sommes dits que quitte à en imprimer un, on pourrait vous demander d'<strong>en imprimer quelques uns de plus, et pourquoi pas pour toute votre commune,</strong> tout le département, ou, soyons fous, pour toute votre région ?</p>
-							<p class="text-justify">Vous verrez, ça ne coûte pas aussi cher qu'on le pense, quand la dépense est partagée...</p>
-							<p class="text-justify">Alors, nous aiderez-vous à <strong>pirater le système</strong> ?</p>
-                            <a href="#print" class="btn btn-outline btn-dark btn-lg btn-square">Imprimez votre bulletin de vote !</a>
-                            <a href="#finance" class="btn btn-outline btn-dark btn-lg btn-square">Financez des bulletins de vote !</a>
+							<p class="text-center">Le suffrage universel doit permettre à tous les électeurs de s'exprimer<br> et alors que <strong style="color: white;">33 listes</strong> se sont présentées à ces élections européennes en France,<br>nous savons tous que nous ne trouverons pas 33 bulletins de vote dans nos bureaux de vote.</p>
+							<p class="text-center">Pourquoi ? Parce que <strong style="color: white;">les bulletins de vote</strong> doivent être fournis par les candidats <strong style="color: white;">pour tous les électeurs</strong>.<br />
+							D'après notre imprimeur préféré, cela couterait au minimum <strong style="color: white;">270 000€</strong>.</p>
+							<p class="text-center" style="color: white; font-size: larger;"><strong style="color: white;">Oui, nous aussi, on trouve ça inadmissible.</strong></p>
+							<p class="text-center">Tout comme la plupart des "petits" partis qui ne sont financés que par les dons de leurs soutiens, nous, Pirates, ne sommes pas en capacité d'imprimer nos bulletins de vote nous mêmes.</p>
+							<p class="text-center">Aussi, nous sommes contraints et désolés de vous demander d'<strong style="color: white;">imprimer vous-mêmes votre bulletin</strong>. </p>
+							<p class="text-center">Mais nous nous sommes dits que quitte à en imprimer un, on pourrait vous demander <br> d'<strong style="color: white;">en imprimer quelques uns de plus, et pourquoi pas pour toute votre commune,</strong> <br>tout le département, ou, soyons fous, pour toute votre région&nbsp;?</p>
+							<p class="text-center">Vous verrez, ça ne coûte pas aussi cher qu'on le pense, quand la dépense est partagée...</p>
+							<p class="text-center">Alors, nous aiderez-vous à <strong style="color: white;">pirater le système</strong> ?</p>
+                            <a href="#print" class="btn btn-outline btn-dark btn-lg btn-square" style="color: white;">Imprimez votre bulletin de vote !</a>
+                            <a href="#finance" class="btn btn-outline btn-dark btn-lg btn-square" style="color: white;">Financez des bulletins de vote !</a>
                         </div>
                     </div>
                 </div>
@@ -382,20 +382,18 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 <div class="form-group">
     <label class="col-md-4 control-label" for="singlebutton">Total de bulletins</label>
     <div class="col-md-2">
-        <span id="total-ballots-span"></span>
+        <span id="total-ballots-span">0</span>
     </div>
     <label class="col-md-4 control-label" for="singlebutton">Prix total</label>
     <div class="col-md-2">
-        <span id="total-price-span"></span>
+        <span id="total-price-span">0,00 &euro;</span>
     </div>
 </div>
 
 <br><br>
 
-
 </div>	
 </div>                    	
-
 
 <div class="row">	
 <div class="col-lg-12" data-scrollreveal="enter left over 1s">	
@@ -637,6 +635,8 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 
 	// get color depending on population pourcent value
 	function getColor(d) {
+		d = ("" + d).replace("%", "") * 1.;
+/*
 		return d > 100 ? '#800026' :
 			d > 90 ? '#BD0026' :
 				d > 75 ? '#E31A1C' :
@@ -645,6 +645,15 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 							d > 20 ? '#FEB24C' :
 								d > 10 ? '#FED976' :
 									'#FFEDA0';
+*/									
+		return d > 50 ? '#40FF40' : // OK
+			d > 40 ? '#60FF20' :
+				d > 30 ? '#A0FF10' :
+					d > 25 ? '#FFFF00' :
+						d > 20 ? '#FFE000' :
+							d > 15 ? '#FFD000' :
+								d > 10 ? '#FFC000' :
+									'#FFA500'; // OK
 	}
 
 	function style(feature) {
@@ -707,7 +716,7 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 10, 20, 25, 50, 75, 90, 100],
+			grades = [0, 10, 15, 20, 25, 30, 40, 50],
 			labels = [],
 			from, to;
 
@@ -715,7 +724,7 @@ aria-controls="identityCollapse" data-parent="form">Vous</a>
 			from = grades[i];
 			to = grades[i + 1];
 
-			labels.push('<i style="background:' + getColor(from + 1) + '"></i> ' + from + (to ? '&ndash;' + to : ''));
+			labels.push('<i style="background:' + getColor(from + 1) + '"></i> ' + from + "%" + (to ? '&ndash;' + to + "%" : ''));
 		}
 
 		div.innerHTML = labels.join('<br>');
@@ -806,6 +815,7 @@ function addSearch() {
 
 	row.find(".btn-remove-destination").click(function() {
 		$(this).parents(".destination").remove();
+		computeTotals();
 	});
 
 	computeTotals();

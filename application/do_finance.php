@@ -41,9 +41,12 @@ if ($mail != $confirmation) {
 
 $destinations = json_decode($_REQUEST["destinations-input"], true);
 
+$acceptNotification = isset($_REQUEST["accept_notification"]);
+
 foreach($destinations as $destination) {
     if (isset($destination["insee"])) {
         $ballot = array("bal_city_insee" => $destination["insee"], "bal_email" => $mail, "bal_percent" => $destination["proportion"]);
+        $ballot["bal_accept_notification"] = $acceptNotification;
         $ballotBo->save($ballot);
     }
     else {
@@ -68,6 +71,7 @@ foreach($destinations as $destination) {
 
         foreach($cities as $city) {
             $ballot = array("bal_city_insee" => $city["cit_insee"], "bal_email" => $mail, "bal_percent" => $destination["proportion"]);
+            $ballot["bal_accept_notification"] = $acceptNotification;
             $ballotBo->save($ballot);
         }
     }

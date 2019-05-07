@@ -72,6 +72,7 @@ $(function() {
         		}
         		else {
 	    			$("#contactForm").hide();
+	    			$(".contactForm-title").hide();
 	    			$("#response").show();
         		}
 	        },

@@ -72,6 +72,10 @@ foreach($cities as &$city) {
 	$data["cities"][] = $city;
 }
 
+if (isset($_REQUEST["requestId"])) {
+	$data["requestId"] = $_REQUEST["requestId"];
+}
+
 $data["numberOfBallots"] = $numberOfBallots;
 $data["numberOfCities"] = count($data["cities"]);
 $data["population"] = $population;

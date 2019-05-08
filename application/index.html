@@ -117,6 +117,9 @@
                         <li class="page-scroll">
                             <a href="#finance">Financer des bulletins</a>
                         </li>
+                        <li class="page-scroll">
+                            <a href="https://europeennes.partipirate.org">Les Européennes 2019</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -871,9 +874,15 @@ function getRegion(name) {
 	return null;
 }
 
+var requestId = 0;
+
 function getNumberOfBallots(parameters) {
+	requestId++;
+	parameters.requestId = requestId;
 
 	var responseHandler = function(data) {
+		if (data.requestId != requestId) return;
+
 		const numberOfBallots = data.numberOfBallots;
 		const price = getPrice(numberOfBallots);
 

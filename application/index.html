@@ -121,6 +121,12 @@
                         <li class="page-scroll">
                             <a href="https://europeennes.partipirate.org">Les Européennes 2019</a>
                         </li>
+                        <li class="page-scroll">
+                            <a href="Circulaire_PartiPirate.pdf" target="_blank">La circulaire</a>
+                        </li>
+                        <li class="page-scroll">
+                            <a href="Tract_A6_x4.pdf" target="_blank">Le tract</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -172,15 +178,22 @@
             <div class="container">
                 <div class="row" data-scrollreveal="move 0 over 1s">
                     <div class="col-lg-12 text-center">
-                        <h2>Comment imprimer mon bulletin de vote ?</h2>
+                        <h2>Imprimer mon bulletin de vote</h2>
                         <hr class="primary">
+<!--                    	
 						<p>Consulter notre vidéo d'explication (en cours de production) : </p>
 						<div data-scrollreveal="enter top move 200px over 1s">
                             <img src="assets/img/YouTube.png" alt="">
                         </div>
+-->
                     </div>
                     <div class="col-lg-8 col-lg-offset-2 text-center">
-                        <p>Pour nous accompagner dans cette campagne, nous avons besoin de votre aide.</p>
+                        <p>Pour élire des eurodéputés Pirates, nous avons besoin de votre aide.</p>
+                    </div>
+                    <div class="col-lg-12 text-center">
+						<a href="bulletindevote.pdf" class="btn btn-primary btn-lg">Télécharger le Bulletin</a>
+						<br>
+						<br>
                     </div>
 					<div class="row" data-scrollreveal="enter bottom over 1s">
                     <div class="col-lg-6 services-col">
@@ -198,9 +211,12 @@
                             <div class="col-sm-3 text-center text-primary"><i class="fa fa-4x fa-users"></i>
                             </div>
                             <div class="col-sm-9">
-                                <h3>Imprimer votre bulletin de vote</h3>
-                                <p>Vous pouvez le télécharger ici : <a href="bulletindevote.pdf">Le Bulletin</a></p>
+                                <h3>Instruction pour l'impression</h3>
+                                <p>Télécharger <a href="bulletindevote.pdf">le bulletin</a></p>
+								<p>Veillez à l'imprimer sur du <strong>papier A4 70g/m<sup>2</sup></strong>, le papier usuel pouvant entraîner la nullité du bulletin suivant la complaisance du président du bureau de vote.</p>
+<!--
                                 <p>Attention, il est préférable d'utiliser du <strong>papier A4 70g/m<sup>2</sup></strong> pour imprimer votre bulletin, le papier usuel pouvant entraîner la nullité du bulletin suivant la complaisance du président du bureau de vote.</p>
+-->
                             </div>
                         </div>
 					</div>
@@ -475,7 +491,7 @@ aria-controls="identityCollapse" data-parent="form">Bulletins</a>
                         <div class="col-md-3">
                             <h2 class="script">Parti Pirate</h2>
                             <address>
-                                21, rue de la République<br>
+                                21, place de la République<br>
                                 75003 Paris<br>
 							</address>
                         </div>
@@ -693,7 +709,7 @@ aria-controls="identityCollapse" data-parent="form">Bulletins</a>
 	function style(feature) {
 		return {
 			weight: 2,
-			opacity: 1,
+			opacity: 0.3,
 			color: 'black',
 			dashArray: '3',
 			fillOpacity: 0.8,
@@ -706,6 +722,7 @@ aria-controls="identityCollapse" data-parent="form">Bulletins</a>
 
 		layer.setStyle({
 			weight: 2,
+			opacity: 0.8,
 			color: '#333',
 			dashArray: '',
 			fillOpacity: 0.8

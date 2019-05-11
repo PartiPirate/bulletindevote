@@ -59,11 +59,11 @@ foreach($destinations as $destination) {
         	$filters["cit_department"] = $destination["zone"];
         }
         else {
-        	if (intval($destination["city"])) {
-        		$filters["cit_like_zip_code"] = $destination["city"];
+        	if (intval($destination["zone"])) {
+        		$filters["cit_like_zip_code"] = $destination["zone"];
         	}
         	else {
-        		$filters["cit_like_name"] = $destination["city"];
+        		$filters["cit_like_name"] = $destination["zone"];
         	}
         }
 

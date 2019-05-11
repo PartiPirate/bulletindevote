@@ -58,7 +58,7 @@ $electors = 0;
 $population = 0;
 
 foreach($cities as &$city) {
-	$numberOfElectors = $city["cit_population"] * 0.75 * 1000;
+	$numberOfElectors = intval($city["cit_population"] * 0.75 * 1000);
 
 	$localBallots = ($numberOfElectors * $ratio / 100);
 	$localBallots = ceil($localBallots / 100) * 100;

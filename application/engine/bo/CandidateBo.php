@@ -17,12 +17,12 @@
     along with BulletinDeVote.  If age, see <http://www.gnu.org/licenses/>.
 */
 
-class CityBo {
+class CandidateBo {
 	var $pdo = null;
 	var $config = null;
 
-	var $TABLE = "cities";
-	var $ID_FIELD = "cit_insee";
+	var $TABLE = "candidates";
+	var $ID_FIELD = "can_id";
 
 	function __construct($pdo, $config) {
 		$this->config = $config;
@@ -30,7 +30,7 @@ class CityBo {
 	}
 
 	static function newInstance($pdo, $config = null) {
-		return new CityBo($pdo, $config);
+		return new CandidateBo($pdo, $config);
 	}
 
 	function create(&$motion) {
@@ -73,63 +73,6 @@ class CityBo {
 		if (isset($filters[$this->ID_FIELD])) {
 			$args[$this->ID_FIELD] = $filters[$this->ID_FIELD];
 			$queryBuilder->where("$this->ID_FIELD = :$this->ID_FIELD");
-		}
-
-		if (isset($filters["cit_zip_code"])) {
-			$args["cit_zip_code"] = $filters["cit_zip_code"];
-			$queryBuilder->where("cit_zip_code = :cit_zip_code");
-		}
-
-		if (isset($filters["cit_region"])) {
-			$args["cit_region"] = $filters["cit_region"];
-			$queryBuilder->where("cit_region = :cit_region");
-		}
-
-		if (isset($filters["cit_department"])) {
-			$args["cit_department"] = $filters["cit_department"];
-			$queryBuilder->where("cit_department = :cit_department");
-		}
-
-		if (isset($filters["cit_like_name"])) {
-			$args["cit_like_name"] = $filters["cit_like_name"] . "%";
-			$queryBuilder->where("cit_name LIKE :cit_like_name");
-		}
-
-		if (isset($filters["cit_like_zip_code"])) {
-			$args["cit_like_zip_code"] = $filters["cit_like_zip_code"] . "%";
-			$queryBuilder->where("cit_zip_code LIKE :cit_like_zip_code");
-		}
-
-		if (isset($filters["with_votes"])) {
-/*
-WHERE can_order = 4
-HAVING cit_votes != 0
-*/
-			$queryBuilder->join("results", "res_city_insee = cit_insee");
-			$queryBuilder->join("candidates", "res_id = can_result_id");
-			$queryBuilder->addSelect("res_ballot_percent", "cit_ballot_percent");
-			$queryBuilder->addSelect("sum(can_votes)", "cit_votes");
-			$queryBuilder->addSelect("sum(res_cast)", "cit_cast");
-			$queryBuilder->addSelect("ROUND(sum(can_votes) / sum(res_cast) * 100, 2)", "cit_percent_votes");
-			$queryBuilder->groupBy("cit_insee");
-			$queryBuilder->orderBy("cit_percent_votes", "DESC");
-			$queryBuilder->having("cit_votes != 0");
-
-			if (isset($filters["res_election"])) {
-				$args["res_election"] = $filters["res_election"];
-				$queryBuilder->where("res_election = :res_election");
-			}
-
-			if (isset($filters["can_order"])) {
-				$args["can_order"] = $filters["can_order"];
-				$queryBuilder->where("can_order = :can_order");
-			}
-		}
-
-		if (isset($filters["with_ballots"])) {
-			$queryBuilder->join("ballots", "bal_city_insee = cit_insee AND bal_confirmed = 1", null, "LEFT");
-//			$queryBuilder->addSelect("IFNULL(bal_percent, 0)", "cit_has_ballot");
-			$queryBuilder->addSelect("bal_percent", "cit_has_ballot");
 		}
 
 		$query = $queryBuilder->constructRequest();

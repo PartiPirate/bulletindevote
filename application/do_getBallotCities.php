@@ -32,8 +32,15 @@ $data = array();
 $data["type"] = "FeatureCollection";
 $data["features"] = array();
 
+$numberOfCities = 0;
+$numberOfAllCities = 0;
+$numberOfBallots = 0;
+$numberOfAllBallots = 0;
+$numberOfElectors = 0;
+$numberOfAllElectors = 0;
+
 foreach($ballots as $ballot) {
-	$ballotInformation = array("type" => "Feature", "id" => $ballot["cit_insee"], "properties" => array("name" => $ballot["cit_name"], "pourcent" => $ballot["bal_percent"] . "%"));
+	$ballotInformation = array("type" => "Feature", "id" => $ballot["cit_insee"], "properties" => array("name" => $ballot["cit_name"], "pourcent" => $ballot["bal_percent"] . "%", "insee" => $ballot["cit_insee"], "proportion" => $ballot["bal_percent"] / 100.));
 
 //	echo $ballot["cit_geo_shape"] . "<br>";
 
@@ -44,15 +51,52 @@ foreach($ballots as $ballot) {
 
 //	echo $shape . "<br>";
 
-
 	$defaultCoordinates = explode(",", $ballot["cit_geo_point_2d"]);
 	$ballotInformation["properties"]["defaultCoordinates"] = array(trim($defaultCoordinates[0]) * 1., trim($defaultCoordinates[1]) * 1.);
 	$ballotInformation["geometry"] = json_decode($shape);
 
+    $numberOfCities += ($ballot["bal_percent"] == 100 ? 0 : 1);
+    $numberOfAllCities++;
+
+	$localElectors = intval($ballot["cit_population"] * 0.75 * 1000);
+
+
+    if ($ballot["bal_percent"] == 100) {
+//        $numberOfBallots += ceil($ballot["cit_population"] * 1000 * 0.75);
+        $numberOfAllBallots += ceil($ballot["cit_population"] * 1000 * 0.75);
+
+        $numberOfAllElectors += $localElectors;
+    }
+    else {
+//        $numberOfBallots += ceil($ballot["cit_population"] * 1000 * 0.75 * $ballot["bal_percent"]) * 100;
+        $localBallots = $localElectors * $ballot["bal_percent"] / 100;
+    	$localBallots = ceil($localBallots / 100) * 100;
+
+        $numberOfBallots += $localBallots;
+        $numberOfAllBallots += $localBallots;
+
+        $numberOfElectors += $localElectors;
+        $numberOfAllElectors += $localElectors;
+    }
+
 	$data["features"][] = $ballotInformation;
 }
+
+$data["numberOfCities"] = $numberOfCities;
+$data["numberOfAllCities"] = $numberOfAllCities;
+$data["numberOfBallots"] = $numberOfBallots;
+$data["numberOfAllBallots"] = $numberOfAllBallots;
+$data["numberOfElectors"] = $numberOfElectors;
+$data["numberOfAllElectors"] = $numberOfAllElectors;
 
 // echo json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE);
 ?>
 
+<?php   if (!isset($_REQUEST["json"])) { ?>
 var citiesData = <?=json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT)?>;
+<?php   } else {
+    
+            echo json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
+    
+        }
+?>

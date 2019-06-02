@@ -24,6 +24,7 @@ class MySQLQuery {
 	var $froms = array();
 	var $joins = array();
 	var $wheres = array();
+	var $havings = array();
 	var $orderBys = array();
 	var $groupBys = array();
 	var $sets = array();
@@ -121,6 +122,12 @@ class MySQLQuery {
 
 	function where($where) {
 	    $this->wheres[] = array("where" => $where);
+
+	    return $this;
+	}
+
+	function having($having) {
+	    $this->havings[] = array("having" => $having);
 
 	    return $this;
 	}
@@ -300,6 +307,9 @@ class MySQLQuery {
 
 	        $separator = ", ";
 	    }
+	    
+		$query .= $this->addHavingClauseInQuery();
+	    
 	    $separator = "\nORDER BY ";
 
 	    foreach($this->orderBys as $orderBy) {
@@ -386,6 +396,24 @@ class MySQLQuery {
 //            print_r($where);
 
             $query .= $where["where"];
+
+	        $separator = "\nAND ";
+	    }
+	    
+	    return $query;
+	}
+
+	private function addHavingClauseInQuery() {
+		$query = "";
+
+	    $separator = "\nHAVING 1 = 1 \nAND ";
+
+	    foreach($this->havings as $having) {
+	        $query .= $separator;
+
+//            print_r($having);
+
+            $query .= $having["having"];
 
 	        $separator = "\nAND ";
 	    }
